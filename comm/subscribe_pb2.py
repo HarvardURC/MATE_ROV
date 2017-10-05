@@ -19,10 +19,32 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='subscribe.proto',
   package='mateROV',
   syntax='proto2',
-  serialized_pb=_b('\n\x0fsubscribe.proto\x12\x07mateROV\"\x1e\n\tSubscribe\x12\x11\n\tmsg_types\x18\x01 \x03(\x05')
+  serialized_pb=_b('\n\x0fsubscribe.proto\x12\x07mateROV\"v\n\tSubscribe\x12\x11\n\tmsg_types\x18\x01 \x03(\x05\x12)\n\x03\x64ir\x18\x02 \x02(\x0e\x32\x1c.mateROV.Subscribe.Direction\"+\n\tDirection\x12\r\n\tSUBSCRIBE\x10\x00\x12\x0f\n\x0bUNSUBSCRIBE\x10\x01')
 )
 
 
+
+_SUBSCRIBE_DIRECTION = _descriptor.EnumDescriptor(
+  name='Direction',
+  full_name='mateROV.Subscribe.Direction',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='SUBSCRIBE', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='UNSUBSCRIBE', index=1, number=1,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=103,
+  serialized_end=146,
+)
+_sym_db.RegisterEnumDescriptor(_SUBSCRIBE_DIRECTION)
 
 
 _SUBSCRIBE = _descriptor.Descriptor(
@@ -39,11 +61,19 @@ _SUBSCRIBE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='dir', full_name='mateROV.Subscribe.dir', index=1,
+      number=2, type=14, cpp_type=8, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
+    _SUBSCRIBE_DIRECTION,
   ],
   options=None,
   is_extendable=False,
@@ -52,9 +82,11 @@ _SUBSCRIBE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=28,
-  serialized_end=58,
+  serialized_end=146,
 )
 
+_SUBSCRIBE.fields_by_name['dir'].enum_type = _SUBSCRIBE_DIRECTION
+_SUBSCRIBE_DIRECTION.containing_type = _SUBSCRIBE
 DESCRIPTOR.message_types_by_name['Subscribe'] = _SUBSCRIBE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 

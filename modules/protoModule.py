@@ -1,4 +1,5 @@
 from comm.asyncClient import AsyncClient
+from comm.subscribe_pb2 import Subscribe
 
 class ProtoModule:
     def __init__(self, loop, addr, port, subscriptions):
@@ -13,7 +14,10 @@ class ProtoModule:
         raise NotImplementedError()
 
     def subscribe(self, msg_types):
-        self.client.subscribe(msg_types)
+        self.client.subscribe(msg_types, Subscribe.SUBSCRIBE)
+
+    def unsubscribe(self, msg_types):
+        self.client.subscribe(msg_types, Subscribe.UNSUBSCRIBE)
 
     def write(self, msg, msg_type):
         self.client.write(msg, msg_type)

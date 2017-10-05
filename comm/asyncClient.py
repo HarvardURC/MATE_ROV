@@ -33,7 +33,7 @@ class AsyncClient(AsyncProto):
     def connection_made(self, transport):
         super().connection_made(transport)
         if len(self.subscriptions) > 0:
-            self.subscribe(self.subscriptions)
+            self.subscribe(self.subscriptions, Subscribe.SUBSCRIBE)
 
     def msg_received(self, data, msg_type):
         msg = message_buffers[msg_type]()
@@ -43,10 +43,11 @@ class AsyncClient(AsyncProto):
     def write(self, msg, msg_type):
         super().write(msg, msg_type)
 
-    def subscribe(self, msg_types):
+    def subscribe(self, msg_types, direction):
         msg = Subscribe()
         for msg_type in msg_types:
             msg.msg_types.append(msg_type.value)
+        msg.dir = direction
         self.write(msg.SerializeToString(), MsgType.SUBSCRIBE)
 
 
