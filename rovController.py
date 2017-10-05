@@ -3,6 +3,7 @@
 import time, os, sys, logging
 import asyncio # minimum Python 3.4, changed in 3.5.1
 from comm.serverProto import ServerProto
+from comm.subscribe_pb2 import Subscribe
 from comm.constants import *
 
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
@@ -17,12 +18,25 @@ class RovController():
         coro = loop.create_server(lambda: ServerProto(self), ADDRESS, PORT)
         self.server = loop.run_until_complete(coro)
 
+    def _handle_subscriptions(self, protocol, data):
+        if data.dir == Subscribe.SUBSCRIBE:
+            self._add_subscriptions(protocol, data)
+        else:
+            self._remove_subscriptions(protocol, data)
+
+    def _remove_subscriptions(self, protocol, data):
+        for msg_type in data.msg_types:
+            m_type = MsgType(msg_type)
+            if m_type in self.subs:
+                self.subs[m_type].remove(protocol)
+
     def _add_subscriptions(self, protocol, data):
         for msg_type in data.msg_types:
-            if msg_type in self.subs:
-                self.subs[MsgType(msg_type)].append(protocol)
+            m_type = MsgType(msg_type)
+            if m_type in self.subs:
+                self.subs[m_type].append(protocol)
             else:
-                self.subs[MsgType(msg_type)] = [protocol]
+                self.subs[m_type] = [protocol]
 
     def _forward_msg(self, msg, msg_type):
         if msg_type in self.subs:
@@ -34,7 +48,7 @@ class RovController():
         if msg_type == MsgType.SUBSCRIBE:
             data = message_buffers[msg_type]()
             data.ParseFromString(msg)
-            self._add_subscriptions(protocol, data)
+            self._handle_subscriptions(protocol, data)
         else:
             self._forward_msg(msg, msg_type)
 

@@ -14,6 +14,8 @@ class MockGuiModule(ProtoModule):
     def __init__(self, loop):
         super().__init__(loop, ADDRESS, PORT,[MsgType.MOCK_MSG])
         self.value = -1
+        self.sub_ticks = 0
+        self.subbed = True
 
     def msg_received(self, msg, msg_type):
         # This gets called whenever any message is received
@@ -26,6 +28,19 @@ class MockGuiModule(ProtoModule):
 
         # for this mock module we will print out the current value
         print('Current value: {}'.format(self.value))
+
+        # to demonstrate subscription and unsubscription,
+        # we will periodically unsubscribe and resubscribe
+        if self.sub_ticks > 100:
+            if self.subbed:
+                print('Unsubscribed!')
+                self.unsubscribe([MsgType.MOCK_MSG])
+            else:
+                print('Subscribed!')
+                self.subscribe([MsgType.MOCK_MSG])
+            self.subbed = not self.subbed
+            self.sub_ticks = 0
+        self.sub_ticks += 1
 
 
 def main():
