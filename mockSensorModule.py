@@ -1,21 +1,18 @@
 #!/usr/bin/env python3
 
-import asyncio, os
-from modules.protoModule import ProtoModule
-from comm.constants import *
-from comm.mockMsg_pb2 import MockMsg
-
-import random
+import os, random
+import robomodules as rm
+from messages import *
 
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
 PORT = os.environ.get("BIND_PORT", 11297)
 
-
 FREQUENCY = 2
 
-class MockSensorModule(ProtoModule):
-    def __init__(self, loop):
-        super().__init__(loop, ADDRESS, PORT, [])
+class MockSensorModule(rm.ProtoModule):
+    def __init__(self, addr, port):
+        self.subscriptions = []
+        super().__init__(addr, port, message_buffers, MsgType, self.subscriptions)
 
     def msg_received(self, msg, msg_type):
         # This gets called whenever any message is received
@@ -34,8 +31,7 @@ class MockSensorModule(ProtoModule):
 
 
 def main():
-    loop = asyncio.get_event_loop()
-    module = MockSensorModule(loop)
+    module = MockSensorModule(ADDRESS, PORT)
     module.run()
 
 if __name__ == "__main__":

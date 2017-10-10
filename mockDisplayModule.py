@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 
-import asyncio, os
-from modules.protoModule import ProtoModule
-from comm.constants import *
-from comm.mockMsg_pb2 import MockMsg
+import os
+import robomodules as rm
+from messages import message_buffers, MsgType
 
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
 PORT = os.environ.get("BIND_PORT", 11297)
 
 FREQUENCY = 10
 
-class MockGuiModule(ProtoModule):
-    def __init__(self, loop):
-        super().__init__(loop, ADDRESS, PORT,[MsgType.MOCK_MSG])
+class MockGuiModule(rm.ProtoModule):
+    def __init__(self, addr, port):
+        self.subscriptions = [MsgType.MOCK_MSG]
+        super().__init__(addr, port, message_buffers, MsgType, self.subscriptions)
         self.value = -1
         self.sub_ticks = 0
         self.subbed = True
@@ -44,8 +44,7 @@ class MockGuiModule(ProtoModule):
 
 
 def main():
-    loop = asyncio.get_event_loop()
-    module = MockGuiModule(loop)
+    module = MockGuiModule(ADDRESS, PORT)
     module.run()
 
 if __name__ == "__main__":
