@@ -12,7 +12,7 @@ FREQUENCY = 2
 class MockSensorModule(rm.ProtoModule):
     def __init__(self, addr, port):
         self.subscriptions = []
-        super().__init__(addr, port, message_buffers, MsgType, self.subscriptions)
+        super().__init__(addr, port, message_buffers, MsgType, FREQUENCY)
 
     def msg_received(self, msg, msg_type):
         # This gets called whenever any message is received
@@ -21,8 +21,6 @@ class MockSensorModule(rm.ProtoModule):
 
     def tick(self):
         # this function will get called in a loop with FREQUENCY frequency
-        self.loop.call_later(1.0/FREQUENCY, self.tick)
-
         # for this mock module we will just send a random int
         msg = MockMsg()
         msg.mockValue = random.randint(1, 9)
