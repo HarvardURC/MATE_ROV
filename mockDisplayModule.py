@@ -12,7 +12,7 @@ FREQUENCY = 10
 class MockGuiModule(rm.ProtoModule):
     def __init__(self, addr, port):
         self.subscriptions = [MsgType.MOCK_MSG]
-        super().__init__(addr, port, message_buffers, MsgType, self.subscriptions)
+        super().__init__(addr, port, message_buffers, MsgType, FREQUENCY, self.subscriptions)
         self.value = -1
         self.sub_ticks = 0
         self.subbed = True
@@ -24,8 +24,6 @@ class MockGuiModule(rm.ProtoModule):
 
     def tick(self):
         # this function will get called in a loop with FREQUENCY frequency
-        self.loop.call_later(1.0/FREQUENCY, self.tick)
-
         # for this mock module we will print out the current value
         print('Current value: {}'.format(self.value))
 
