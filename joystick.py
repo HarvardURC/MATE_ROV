@@ -1,6 +1,8 @@
 import pygame, sys
 from pygame.locals import *
 
+
+
 # Define some colors
 BLACK    = (   0,   0,   0)
 WHITE    = ( 255, 255, 255)
@@ -58,8 +60,8 @@ else:
 	            done=True # Flag that we are done so we exit this loop
 	        
 	        # Possible joystick actions: JOYAXISMOTION JOYBALLMOTION JOYBUTTONDOWN JOYBUTTONUP JOYHATMOTION
-	        if event.type == pygame.JOYAXISMOTION:
-	            print("Joystick axis moved.")
+	        # if event.type == pygame.JOYAXISMOTION:
+	        #     print("Joystick axis moved.")
 	    # DRAWING STEP
 	    # First, clear the screen to white. Don't put other drawing commands
 	    # above this, or they will be erased with this command.
