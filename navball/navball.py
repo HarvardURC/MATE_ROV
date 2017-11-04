@@ -1,25 +1,26 @@
-#!/usr/bin/env python
-
 import math
 import pygame
 import numpy as np
 import scipy
 import scipy.misc
 import scipy.ndimage.interpolation
-import time
-
-SRC = 'ji80w.png'
-SIZE = 300
 
 class NavBall():
-    def __init__(self, source, size):
+    def __init__(self, display, source, size, x, y):
+        self.display = display
         self.src = scipy.misc.imread(source)
         self.size = size
+        self.x = x
+        self.y = y
 
-    def get_view(self, yaw, pitch):
-
+    def _adjust_inputs(self, yaw, pitch):
         yaw = (yaw+90)/360
         pitch = (pitch/360)*16
+        return (yaw, pitch)
+
+    def _get_view(self, yaw, pitch):
+
+        yaw, pitch = self._adjust_inputs(yaw, pitch)
 
         # Image pixel co-ordinates
         px=np.arange(-1.0,1.0,2.0/self.size)+1.0/self.size
@@ -34,7 +35,6 @@ class NavBall():
             -np.sqrt(1.0-np.where(hit,r2,0.0)),
             np.NaN
             )
-
 
         spin=2.0*np.pi*(-yaw)
         cs=math.cos(spin)
@@ -71,28 +71,13 @@ class NavBall():
                     ),
                 0.0
                 )
+
         return np.rot90(np.fliplr(dst))
 
-def main():
-    navball = NavBall(SRC, SIZE)
-    pygame.init()
-    display = pygame.display.set_mode((350, 350))
-
-    running = True
-    pitch = 90
-    yaw = 0
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-        ball = navball.get_view(yaw, pitch)
+    def draw_ball_surf(self, yaw, roll, pitch):
+        ball = self._get_view(yaw, pitch)
         surf = pygame.surfarray.make_surface(ball)
-        display.blit(surf, (0, 0))
-        pygame.display.update()
-        print("Y:{}\nP:{}".format(yaw, pitch))
-        time.sleep(0.1)
-    pygame.quit()
-
-
-if __name__ == "__main__":
-    main()
+        rotated_surf = pygame.transform.rotate(surf, roll)
+        rotated_rect = rotated_surf.get_rect()
+        rotated_rect.center = (self.x, self.y)
+        self.display.blit(rotated_surf, rotated_rect)
