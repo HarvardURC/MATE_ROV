@@ -27,13 +27,12 @@ class CameraSensorModule(rm.ProtoModule):
     def tick(self):
         # this function will get called in a loop with FREQUENCY frequency
         # gets the camera feed, puts it into the message
-        msg = CameraFrameMsg()  # TODO make CameraFrameMsg class
-        
+        msg = CameraFrameMsg()
         ret, frame = self.cam.read()
-    
-        serialized_frame = pickle.dumps(frame)
-        
-        self.write(serialized_frame, MsgType.CAMERA_FRAME)  # TODO add CAMERA_FRAME
+        # note: cameraFrame is apparently a string data type in the protocol buffer
+        msg.cameraFrame = pickle.dumps(frame)
+        msg = msg.SerializeToString()
+        self.write(msg, MsgType.CAMERA_FRAME_MSG)
 
 
 def main():
