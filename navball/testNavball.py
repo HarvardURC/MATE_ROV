@@ -9,7 +9,6 @@ NAVBALL_SIZE = 300
 SCREEN_SIZE = 800
 FREQUENCY = 30
 
-
 def main():
     pygame.init()
     display = pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
@@ -23,7 +22,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        navball.draw_ball_surf(yaw, roll, pitch)
+        navball.draw(yaw, roll, pitch)
         pygame.display.update()
         roll += 10
         yaw += 5

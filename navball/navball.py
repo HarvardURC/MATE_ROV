@@ -74,7 +74,7 @@ class NavBall():
 
         return np.rot90(np.fliplr(dst))
 
-    def draw_ball_surf(self, yaw, roll, pitch):
+    def draw(self, yaw, roll, pitch):
         ball = self._get_view(yaw, pitch)
         surf = pygame.surfarray.make_surface(ball)
         rotated_surf = pygame.transform.rotate(surf, roll)
