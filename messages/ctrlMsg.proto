@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+package mateROV;
+
+message CtrlMsg	{
+
+	required float x = 0.
+	required float y = 0.
+	required float z = 0.
+	required float roll = 0.
+	required float pitch = 0.
+	required float yaw = 0.
+}
