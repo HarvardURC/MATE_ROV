@@ -33,7 +33,7 @@ class JoystickModule(rm.ProtoModule):
             joylist.append(pygame.joystick.Joystick(n))
             joylist[n].init()
             print(joylist[n].get_name())
-            if joylist[n].get_name() == "Logitech Logitech Dual Action":
+            if joylist[n].get_name() == "Logitech Logitech Dual Action" or joylist[n].get_name() == "Logitech Dual Action":
                 self.logitech = joylist[n]
                 break
             elif n == njoysticks - 1:
@@ -72,7 +72,7 @@ class JoystickModule(rm.ProtoModule):
         buttonRB = joy.get_button(5)
         buttonLT = joy.get_button(6)
         buttonRT = joy.get_button(7)
-        print(joy.get_axis(0))
+        print(self.logitech.get_axis(0))
 
         # -1 <= up < 0 < down <= +1
         if buttonLB:
