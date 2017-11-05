@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 
-import os, random
+import os
 import robomodules as rm
 from messages import *
-import numpy as np
-import cv2
-import pickle
+import cv2, pickle
 
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
 PORT = os.environ.get("BIND_PORT", 11297)

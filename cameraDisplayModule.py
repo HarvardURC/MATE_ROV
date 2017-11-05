@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 
 import os
-import cv2
 import robomodules as rm
-from messages import message_buffers, MsgType
-import pickle
-import pygame
-import numpy
+from messages import *
+import cv2, pickle, pygame, numpy
 
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
 PORT = os.environ.get("BIND_PORT", 11297)
@@ -31,8 +28,7 @@ class CameraDisplayModule(rm.ProtoModule):
         
 
     def tick(self):
-        # this function will get called in a loop with FREQUENCY frequency
-        # process the serialized frame
+        # FREQUENCY is 0, so this will never be called.
         return
 
     def _display_serialized_image(self):
@@ -41,8 +37,8 @@ class CameraDisplayModule(rm.ProtoModule):
             return
         frame = pickle.loads(self.frame)
         frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
-        frame=numpy.rot90(frame)
-        frame=pygame.surfarray.make_surface(frame)
+        frame = numpy.rot90(frame)
+        frame = pygame.surfarray.make_surface(frame)
         self.display.blit(frame,(0,0))
         pygame.display.flip()
 
