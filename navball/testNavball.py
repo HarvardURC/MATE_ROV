@@ -4,7 +4,6 @@ import pygame
 import time
 from navball import NavBall
 
-SRC = 'ji80w.png'
 NAVBALL_SIZE = 300
 SCREEN_SIZE = 800
 FREQUENCY = 30
@@ -12,7 +11,7 @@ FREQUENCY = 30
 def main():
     pygame.init()
     display = pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
-    navball = NavBall(display, SRC, NAVBALL_SIZE, SCREEN_SIZE/2, SCREEN_SIZE/2)
+    navball = NavBall(display, NAVBALL_SIZE, SCREEN_SIZE/2, SCREEN_SIZE/2)
 
     running = True
     pitch = 0

@@ -1,99 +1,68 @@
 #!/usr/bin/env python3
 
-import os, random
+import os
+import cv2
 import robomodules as rm
-from messages import *
-import pygame, sys
-from pygame.locals import *
+import pickle
+import pygame
+import numpy
+from messages import message_buffers, MsgType
+from navball import NavBall
 
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
 PORT = os.environ.get("BIND_PORT", 11297)
 
-FREQUENCY = 20
+FREQUENCY = 30
+NAVBALL_FREQ = 5
+SCREEN_SIZE = (1600, 900)
+NAVBALL_SIZE = 300
 
 class GuiModule(rm.ProtoModule):
     def __init__(self, addr, port):
-        super().__init__(addr, port, message_buffers, MsgType, FREQUENCY)
-        self.x = 0.
-        self.y = 0.
-        self.z = 0.
-        self.pitch = 0.
-        self.yaw = 0.
-        self.roll = 0.
+        self.subscriptions = [MsgType.CAMERA_FRAME_MSG, MsgType.CTRL_MSG]
+        super().__init__(addr, port, message_buffers, MsgType, FREQUENCY, self.subscriptions)
+        self.frame = None
         pygame.init()
-        pygame.joystick.init()
-        njoysticks = pygame.joystick.get_count()
-        if njoysticks == 0:
-            print("No joysticks found")
-            pygame.quit()
-        else:
-            joylist = []
-        for n in range(0, njoysticks):
-            joylist.append(pygame.joystick.Joystick(n))
-            joylist[n].init()
-            print(joylist[n].get_name())
-            if joylist[n].get_name() = "Logitech Dual Action":
-                self.logitech = joylist[n]
-                n = njoysticks - 1
-            elif n = njoysticks - 1:
-                print("Correct Joystick Not Found")
-                pygame.quit()
-
+        self.display = pygame.display.set_mode(SCREEN_SIZE)
+        self.navball = NavBall(self.display, NAVBALL_SIZE, SCREEN_SIZE[0]/2, SCREEN_SIZE[1] - NAVBALL_SIZE/2 - 50)
+        self.navball_ticks = 0
+        self.roll = 0
+        self.yaw = 0
+        self.pitch = 0
 
     def msg_received(self, msg, msg_type):
         # This gets called whenever any message is received
-        # This module only sends data, so we ignore incoming messages
-        return
-
+        # We receive pickled frames here.
+        if msg_type == MsgType.CAMERA_FRAME_MSG:
+            self.frame = msg.cameraFrame
+        elif msg_type == MsgType.CTRL_MSG:
+            self.roll = msg.roll * 90
+            self.pitch = msg.pitch * 90
+            self.yaw = msg.yaw * 90
+        
     def tick(self):
-        # this function will get called in a loop with FREQUENCY frequency
-        # for this mock module we will just send a random int
-        msg = CtrlMsg()
-        self._get_input()
-        msg.x = self.x
-        msg.y = self.y
-        msg.z = self.z
-        msg.pitch = self.pitch
-        msg.yaw = self.yaw
-        msg.roll = self.roll
-        msg = msg.SerializeToString()
-        self.write(msg, MsgType.CTRL_MSG)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit('quit')
+        self._display_serialized_image()
+        if self.navball_ticks % int(FREQUENCY/NAVBALL_FREQ) == 0:
+            self.navball.draw(self.yaw, self.roll, self.pitch)
+        pygame.display.update()
+        self.navball_ticks += 1
 
-    def _get_input(self):
-        joy = self.logitech
-        buttonA = joy.get_button(1)
-        buttonB = joy.get_button(2)
-        buttonX = joy.get_button(0)
-        buttonY = joy.get_button(3)
-        buttonLB = joy.get_button(4)
-        buttonRB = joy.get_button(5)
-        buttonLT = joy.get_button(6)
-        buttonRT = joy.get_button(7)
-
-        # -1 <= up < 0 < down <= +1
-        if buttonLB:
-            self.y = 0.
-            self.z = joy.get_axis(1)
-        else:
-            self.y = joy.get_axis(1)
-            self.z = 0.
-            self.pitch = joy.get_axis(3)
-
-        # -1 <= left < 0 < right <= +1
-        if buttonRB:
-            self.yaw = 0.
-            self.roll = joy.get_axis(2)
-        else:
-            self.yaw = joy.get_axis(2)
-            self.roll = 0.
-            self.x = joy.get_axis(0)
-
+    def _display_serialized_image(self):
+        if not self.frame:
+            return
+        frame = pickle.loads(self.frame)
+        frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
+        frame=numpy.rot90(frame)
+        frame=pygame.surfarray.make_surface(frame)
+        self.display.blit(frame,(0,0))
 
 def main():
     module = GuiModule(ADDRESS, PORT)
     module.run()
     pygame.quit()
-
 
 if __name__ == "__main__":
     main()

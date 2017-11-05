@@ -5,10 +5,12 @@ import scipy
 import scipy.misc
 import scipy.ndimage.interpolation
 
+NAVBALL_SOURCE = './navball/ji80w.png'
+
 class NavBall():
-    def __init__(self, display, source, size, x, y):
+    def __init__(self, display, size, x, y):
         self.display = display
-        self.src = scipy.misc.imread(source)
+        self.src = scipy.misc.imread(NAVBALL_SOURCE)
         self.size = size
         self.x = x
         self.y = y
