@@ -1,3 +1,3 @@
-protobuf: mockMsg.proto cameraMsg.proto
+protobuf: mockMsg.proto cameraFrameMsg.proto
 	protoc -I=./ --python_out=./ ./mockMsg.proto
-	protoc -I=./ --python_out=./ ./cameraMsg.proto
+	protoc -I=./ --python_out=./ ./cameraFrameMsg.proto

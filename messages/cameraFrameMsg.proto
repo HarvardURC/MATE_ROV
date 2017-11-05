@@ -4,5 +4,5 @@ package mateROV;
 
 message CameraFrameMsg {
 
-  required string cameraFrame = 1;
+  required bytes cameraFrame = 1;
 }
