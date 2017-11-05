@@ -4,10 +4,10 @@ package mateROV;
 
 message CtrlMsg {
 
-  required float x = 1
-  required float y = 2
-  required float z = 3
-  required float roll = 4
-  required float pitch = 5
-  required float yaw = 6
+  required float x = 1;
+  required float y = 2;
+  required float z = 3;
+  required float roll = 4;
+  required float pitch = 5;
+  required float yaw = 6;
 }
