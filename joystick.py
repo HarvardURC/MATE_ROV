@@ -11,8 +11,6 @@ PORT = os.environ.get("BIND_PORT", 11297)
 
 FREQUENCY = 20
 
-global logitech
-
 class GUIModule(rm.ProtoModule):
 	def __init__(self, addr, port):
 		super().__init__(addr, port, message_buffers, MsgType, FREQUENCY)
@@ -51,7 +49,7 @@ class GUIModule(rm.ProtoModule):
 		# this function will get called in a loop with FREQUENCY frequency
 		# for this mock module we will just send a random int
 		msg = CtrlMsg()
-		input()
+		self._get_input()
 		msg.x = self.x
 		msg.y = self.y
 		msg.z = self.z
@@ -92,7 +90,7 @@ class GUIModule(rm.ProtoModule):
 
 
 def main():
-	module = MockSensorModule(ADDRESS, PORT)
+	module = GUIModule(ADDRESS, PORT)
 	module.run()
 	pygame.quit()	
 
