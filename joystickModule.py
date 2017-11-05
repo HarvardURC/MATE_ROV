@@ -27,8 +27,7 @@ class JoystickModule(rm.ProtoModule):
         if njoysticks == 0:
             print("No joysticks found")
             pygame.quit()
-        else:
-            joylist = []
+            sys.exit('')
         for n in range(0, njoysticks):
             self.logitech = pygame.joystick.Joystick(n)
             self.logitech.init()
