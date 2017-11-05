@@ -10,15 +10,12 @@ import pickle
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
 PORT = os.environ.get("BIND_PORT", 11297)
 
-FREQUENCY = 2
+FREQUENCY = 30
 
 class CameraSensorModule(rm.ProtoModule):
-    camera_count = 0
-
     def __init__(self, addr, port, camera_port):
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY)
-        self.camera_port = camera_port
-        self.cam = cv2.VideoCapture(self.camera_port)
+        self.cam = cv2.VideoCapture(camera_port)
 
     def msg_received(self, msg, msg_type):
         # This gets called whenever any message is received
@@ -30,15 +27,12 @@ class CameraSensorModule(rm.ProtoModule):
         # gets the camera feed, puts it into the message
         msg = CameraFrameMsg()
         ret, frame = self.cam.read()
-        # note: cameraFrame is bytes type in protocol buffer
         msg.cameraFrame = pickle.dumps(frame)
         msg = msg.SerializeToString()
         self.write(msg, MsgType.CAMERA_FRAME_MSG)
 
 def main():
-    # num of instances opened = that instance's camera_port
-    module = CameraSensorModule(ADDRESS, PORT, CameraSensorModule.camera_count)
-    CameraSensorModule.camera_count += 1
+    module = CameraSensorModule(ADDRESS, PORT, 0)
     module.run()
 
 if __name__ == "__main__":
