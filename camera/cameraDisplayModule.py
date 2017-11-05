@@ -18,7 +18,7 @@ class CameraDisplayModule(rm.ProtoModule):
 
     def msg_received(self, msg, msg_type):
         # This gets called whenever any message is received
-        # We received pickled frames here.
+        # We receive pickled frames here.
         if msg_type == MsgType.CAMERA_FRAME_MSG:
             self.frame = msg.cameraFrame
 
@@ -34,7 +34,6 @@ class CameraDisplayModule(rm.ProtoModule):
         frame = pickle.loads(self.frame)
         # Our operations on the frame come here
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
         # Display the resulting frame
         cv2.imshow('frame',gray)
 
