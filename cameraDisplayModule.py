@@ -5,17 +5,22 @@ import cv2
 import robomodules as rm
 from messages import message_buffers, MsgType
 import pickle
+import pygame
+import numpy
 
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
 PORT = os.environ.get("BIND_PORT", 11297)
 
 FREQUENCY = 0
+SCREEN_SIZE = 800
 
 class CameraDisplayModule(rm.ProtoModule):
     def __init__(self, addr, port):
         self.subscriptions = [MsgType.CAMERA_FRAME_MSG]
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY, self.subscriptions)
         self.frame = None
+        pygame.init()
+        self.display = pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
 
     def msg_received(self, msg, msg_type):
         # This gets called whenever any message is received
@@ -35,12 +40,11 @@ class CameraDisplayModule(rm.ProtoModule):
             print('frame == None')
             return
         frame = pickle.loads(self.frame)
-        # Our operations on the frame come here
-        # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        # Display the resulting frame
-        cv2.imshow('frame', frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            return
+        frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
+        frame=numpy.rot90(frame)
+        frame=pygame.surfarray.make_surface(frame)
+        self.display.blit(frame,(0,0))
+        pygame.display.flip()
 
 def main():
     module = CameraDisplayModule(ADDRESS, PORT)
