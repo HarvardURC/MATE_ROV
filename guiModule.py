@@ -35,7 +35,7 @@ class GuiModule(rm.ProtoModule):
             if joylist[n].get_name() = "Logitech Dual Action":
                 self.logitech = joylist[n]
                 n = njoysticks - 1
-            elif n = njoysticks - 1
+            elif n = njoysticks - 1:
                 print("Correct Joystick Not Found")
                 pygame.quit()
 
