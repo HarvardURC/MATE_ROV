@@ -2,11 +2,11 @@
 
 Code for The Harvard Undergraduate Robotics Club's MATE ROV team.
 
-The code consist of separate modules that are run on either the ROV or on a ground base. Inter-module communications are orchestrated by the Server (server.py). Modules send messages to the server and subscribe to certain message types. When the server receives a message of a certain type, it forwards it to all the modules that have subscribed to that message type.
+The code consist of separate modules that are run on either the ROV or on a ground base. Inter-module communications are orchestrated by the Server (`server.py`). Modules send messages to the server and subscribe to certain message types. When the server receives a message of a certain type, it forwards it to all the modules that have subscribed to that message type.
 
 ## How to run
 
-1. Execute ./server.py
+1. Execute `./server.py`
 2. Execute all of your modules
 
 ## Adding new modules
@@ -26,10 +26,10 @@ The code consist of separate modules that are run on either the ROV or on a grou
     	    protoc -I=./ --python_out=./ ./second.proto
         ```
     - Run the make command in the comm folder.
-    - In messages/__init__.py do the following:
+    - In `messages/__init__.py` do the following:
         - Import your new compiled buffer.
         - Add a message type enum for your new buffer.
-        - Add the new message type and the associated buffer to message_buffers.
+        - Add the new message type and the associated buffer to `message_buffers`.
         - Example:
             - Before:
             ```
@@ -58,4 +58,4 @@ The code consist of separate modules that are run on either the ROV or on a grou
                 MsgType.SECOND: SecondMsg
             }
             ```
-2. Make a new module class that inherits from robomodules.ProtoModule. Look at MockGuiModule.py and MockSensorModule for examples on modules
+2. Make a new module class that inherits from `robomodules.ProtoModule`. Look at `MockGuiModule.py` and `MockSensorModule` for examples on modules.

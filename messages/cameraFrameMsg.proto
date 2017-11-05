@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+package mateROV;
+
+message CameraFrameMsg {
+
+  required bytes cameraFrame = 1;
+}
