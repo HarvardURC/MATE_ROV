@@ -14,8 +14,8 @@ PORT = os.environ.get("BIND_PORT", 11297)
 
 FREQUENCY = 25
 NAVBALL_FREQ = 1
-FRAME_SIZE = 640
-SCREEN_SIZE = (FRAME_SIZE*3, 900)
+FRAME_WIDTH = 640
+SCREEN_SIZE = (FRAME_WIDTH*3, 900)
 NAVBALL_SIZE = 300
 
 class GuiModule(rm.ProtoModule):
@@ -57,8 +57,12 @@ class GuiModule(rm.ProtoModule):
             raw_frame = self.frames[frame_id]
             frame = pickle.loads(raw_frame)
             frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
-            frame=numpy.rot90(frame)
-            frame=pygame.surfarray.make_surface(frame)
+            frame = numpy.rot90(frame)
+            frame = pygame.surfarray.make_surface(frame)
+            cur_width = frame.get_width()
+            cur_height = frame.get_height()
+            new_height = int(cur_height * FRAME_WIDTH/cur_width)
+            frame = pygame.transform.scale(frame, (FRAME_WIDTH, new_height))
             self.display.blit(frame,(cur_x,0))
             cur_x += frame.get_width()
 
