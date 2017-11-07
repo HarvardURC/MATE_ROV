@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='cameraFrameMsg.proto',
   package='mateROV',
   syntax='proto2',
-  serialized_pb=_b('\n\x14\x63\x61meraFrameMsg.proto\x12\x07mateROV\"%\n\x0e\x43\x61meraFrameMsg\x12\x13\n\x0b\x63\x61meraFrame\x18\x01 \x02(\x0c')
+  serialized_pb=_b('\n\x14\x63\x61meraFrameMsg.proto\x12\x07mateROV\"1\n\x0e\x43\x61meraFrameMsg\x12\x13\n\x0b\x63\x61meraFrame\x18\x01 \x02(\x0c\x12\n\n\x02id\x18\x02 \x02(\x05')
 )
 
 
@@ -38,7 +38,14 @@ _CAMERAFRAMEMSG = _descriptor.Descriptor(
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='id', full_name='mateROV.CameraFrameMsg.id', index=1,
+      number=2, type=5, cpp_type=1, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -52,7 +59,7 @@ _CAMERAFRAMEMSG = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=33,
-  serialized_end=70,
+  serialized_end=82,
 )
 
 DESCRIPTOR.message_types_by_name['CameraFrameMsg'] = _CAMERAFRAMEMSG

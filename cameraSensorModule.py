@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os
+import os, sys
 import robomodules as rm
 from messages import *
 import cv2, pickle
@@ -14,6 +14,7 @@ class CameraSensorModule(rm.ProtoModule):
     def __init__(self, addr, port, camera_port):
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY)
         self.cam = cv2.VideoCapture(camera_port)
+        self.id = camera_port
 
     def msg_received(self, msg, msg_type):
         # This gets called whenever any message is received
@@ -26,11 +27,15 @@ class CameraSensorModule(rm.ProtoModule):
         msg = CameraFrameMsg()
         ret, frame = self.cam.read()
         msg.cameraFrame = pickle.dumps(frame)
+        msg.id = self.id
         msg = msg.SerializeToString()
         self.write(msg, MsgType.CAMERA_FRAME_MSG)
 
 def main():
-    module = CameraSensorModule(ADDRESS, PORT, 0)
+    port = 0
+    if len(sys.argv) > 1:
+        port = int(sys.argv[1])
+    module = CameraSensorModule(ADDRESS, PORT, port)
     module.run()
 
 if __name__ == "__main__":
