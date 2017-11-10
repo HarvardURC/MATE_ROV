@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import serial
 import os, random
 import robomodules as rm
 from messages import *
