@@ -77,6 +77,7 @@ class JoystickModule(rm.ProtoModule):
         buttonLT = joy.get_button(6)
         buttonRT = joy.get_button(7)
         tpl = joy.get_hat(0)
+        print(tpl)
 
         self.servoX = tpl[0]
         self.servoY = tpl[1]
