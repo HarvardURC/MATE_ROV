@@ -76,6 +76,11 @@ class NavBall():
 
         return np.rot90(np.fliplr(dst))
 
+    def _draw_level_indicator(self):
+        pygame.draw.lines(self.display, (255, 255, 255), False, [[self.x - self.x/8, self.y], [self.x - self.x/15, self.y], [self.x, self.y + self.y/18], [self.x + self.x/15, self.y], [self.x + self.x/8, self.y]], 3)
+        pygame.draw.line(self.display, (255, 255, 255), [self.x - self.x/50, self.y], [self.x + self.x/50, self.y], 3)
+
+
     def draw(self, yaw, roll, pitch):
         ball = self._get_view(yaw, pitch)
         surf = pygame.surfarray.make_surface(ball)
@@ -83,3 +88,4 @@ class NavBall():
         rotated_rect = rotated_surf.get_rect()
         rotated_rect.center = (self.x, self.y)
         self.display.blit(rotated_surf, rotated_rect)
+        self._draw_level_indicator() 
