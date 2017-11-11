@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+package mateROV;
+
+message HumidityMsg {
+
+  required float humidity = 1;
+}

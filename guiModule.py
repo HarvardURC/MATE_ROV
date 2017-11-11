@@ -20,7 +20,7 @@ NAVBALL_SIZE = 300
 
 class GuiModule(rm.ProtoModule):
     def __init__(self, addr, port):
-        self.subscriptions = [MsgType.CAMERA_FRAME_MSG, MsgType.CTRL_MSG]
+        self.subscriptions = [MsgType.CAMERA_FRAME_MSG, MsgType.CTRL_MSG, MsgType.HUMIDITY_MSG]
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY, self.subscriptions)
         self.frames = {}
         pygame.init()
@@ -30,6 +30,7 @@ class GuiModule(rm.ProtoModule):
         self.roll = 0
         self.yaw = 0
         self.pitch = 0
+        self.humidity = 0
 
     def msg_received(self, msg, msg_type):
         # This gets called whenever any message is received
@@ -40,6 +41,8 @@ class GuiModule(rm.ProtoModule):
             self.roll = msg.roll * 90
             self.pitch = msg.pitch * 90
             self.yaw = msg.yaw * 90
+        elif msg_type = MsgType.HUMIDITY_MSG
+            self.humidity = msg.humidity
         
     def tick(self):
         for event in pygame.event.get():
@@ -48,8 +51,13 @@ class GuiModule(rm.ProtoModule):
         self._display_frames()
         if self.navball_ticks % int(FREQUENCY/NAVBALL_FREQ) == 0:
             self.navball.draw(self.yaw, self.roll, self.pitch)
+        self._draw_sensor_values()
         pygame.display.update()
         self.navball_ticks += 1
+
+    def _draw_sensor_values(self):
+        hum_surface = self.font.render('Humidity={1:0.1f}%'.format(self.humidity), True, (255, 255, 255))
+        self.display.blit(hum_surface, (SCREEN_SIZE[0]-100, SCREEN_SIZE[1]-50))
 
     def _display_frames(self):
         cur_x = 0
