@@ -24,11 +24,12 @@ class ServoModule(rm.ProtoModule):
         return
 
     def tick(self):
+        self.servo.setAccel(11,4) 
         return
 
     def _servo_ctrl(servoX, servoY):
-        servo.setAccel(0, 4*servoX)
-        servo.setAccel(1, 4*servoY)
+        self.servo.setAccel(0, 4*servoX)
+        self.servo.setAccel(1, 4*servoY)
 
 def main():
     module = ServoModule(ADDRESS, PORT)
