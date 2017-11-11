@@ -16,9 +16,6 @@ class ServoModule(rm.ProtoModule):
     def __init__(self, addr, port):
         self.subscriptions = []
 
-        # use 'GPIO naming'
-        wiringpi.wiringPiSetupGpio()
-
         self.servo = maestro.Controller()
 
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY)
@@ -27,7 +24,7 @@ class ServoModule(rm.ProtoModule):
         # This gets called whenever any message is received
         # This module only sends data, so we ignore incoming messages
         if msg_type == MsgType.CTRL_MSG:
-            self._servo_ctrl(msg.servo0, msg.servo1)
+            self._servo_ctrl(msg.servoX, msg.servoY)
         return
 
     def tick(self):
