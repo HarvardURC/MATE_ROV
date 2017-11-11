@@ -8,7 +8,7 @@ from messages import *
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
 PORT = os.environ.get("BIND_PORT", 11297)
 
-FREQUENCY = 0.25
+FREQUENCY = 10
 SENSOR_PIN1 = 21
 
 class MockSensorModule(rm.ProtoModule):

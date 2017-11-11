@@ -8,7 +8,7 @@ import cv2, pickle
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
 PORT = os.environ.get("BIND_PORT", 11297)
 
-FREQUENCY = 30
+FREQUENCY = 4
 
 class CameraSensorModule(rm.ProtoModule):
     def __init__(self, addr, port, camera_port):
@@ -26,6 +26,8 @@ class CameraSensorModule(rm.ProtoModule):
         # gets the camera feed, puts it into the message
         msg = CameraFrameMsg()
         ret, frame = self.cam.read()
+        h, w, _ = frame.shape
+        frame = cv2.resize(frame, (int(w/4), int(h/4)))
         msg.cameraFrame = pickle.dumps(frame)
         msg.id = self.id
         msg = msg.SerializeToString()
