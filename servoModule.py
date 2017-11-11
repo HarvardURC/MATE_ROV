@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import maestro.py
+import maestro
 import time
 import wiringpi
 import os, random
