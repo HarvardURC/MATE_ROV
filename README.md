@@ -8,7 +8,7 @@ The code consist of separate modules that are run on either the ROV or on a grou
 
 1. Install google protocol buffers for python
 2. Install the DHT22 sensor library
-    - 
+    - https://github.com/adafruit/Adafruit_Python_DHT
 
 ## How to run
 
