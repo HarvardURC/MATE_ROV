@@ -27,11 +27,11 @@ void setup(void)
 
 void print_orientation(sensors_event_t event) {
   Serial.write('$');
-  Serial.write(event.orientation.x);
+  Serial.write((byte) event.orientation.x);
   Serial.write(';');
-  Serial.write(event.orientation.y);
+  Serial.write((byte) event.orientation.y);
   Serial.write(';');
-  Serial.write(event.orientation.z);
+  Serial.write((byte) event.orientation.z);
   Serial.write('\n');
 }
 
