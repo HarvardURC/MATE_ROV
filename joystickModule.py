@@ -20,6 +20,8 @@ class JoystickModule(rm.ProtoModule):
         self.pitch = 0.
         self.yaw = 0.
         self.roll = 0.
+        self.servoX = 0
+        self.servoY = 0
         self.logitech = None
         pygame.init()
         pygame.joystick.init()
@@ -57,6 +59,8 @@ class JoystickModule(rm.ProtoModule):
         msg.pitch = self.pitch
         msg.yaw = self.yaw
         msg.roll = self.roll
+        msg.servoX = self.servoX
+        msg.servoY = self.servoY
         msg = msg.SerializeToString()
         self.write(msg, MsgType.CTRL_MSG)
 
@@ -72,6 +76,10 @@ class JoystickModule(rm.ProtoModule):
         buttonRB = joy.get_button(5)
         buttonLT = joy.get_button(6)
         buttonRT = joy.get_button(7)
+        tpl = joy.get_hat(0)
+
+        self.servoX = tpl[0]
+        self.servoY = tpl[1]
 
         # -1 <= up < 0 < down <= +1
         if buttonLB:
