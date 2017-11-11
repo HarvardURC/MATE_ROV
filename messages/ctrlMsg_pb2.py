@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='ctrlMsg.proto',
   package='mateROV',
   syntax='proto2',
-  serialized_pb=_b('\n\rctrlMsg.proto\x12\x07mateROV\"T\n\x07\x43trlMsg\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\x0c\n\x04roll\x18\x04 \x02(\x02\x12\r\n\x05pitch\x18\x05 \x02(\x02\x12\x0b\n\x03yaw\x18\x06 \x02(\x02')
+  serialized_pb=_b('\n\rctrlMsg.proto\x12\x07mateROV\"t\n\x07\x43trlMsg\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\x0c\n\x04roll\x18\x04 \x02(\x02\x12\r\n\x05pitch\x18\x05 \x02(\x02\x12\x0b\n\x03yaw\x18\x06 \x02(\x02\x12\x0e\n\x06servoX\x18\x07 \x02(\x05\x12\x0e\n\x06servoY\x18\x08 \x02(\x05')
 )
 
 
@@ -38,42 +38,56 @@ _CTRLMSG = _descriptor.Descriptor(
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='y', full_name='mateROV.CtrlMsg.y', index=1,
       number=2, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='z', full_name='mateROV.CtrlMsg.z', index=2,
       number=3, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='roll', full_name='mateROV.CtrlMsg.roll', index=3,
       number=4, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='pitch', full_name='mateROV.CtrlMsg.pitch', index=4,
       number=5, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='yaw', full_name='mateROV.CtrlMsg.yaw', index=5,
       number=6, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='servoX', full_name='mateROV.CtrlMsg.servoX', index=6,
+      number=7, type=5, cpp_type=1, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='servoY', full_name='mateROV.CtrlMsg.servoY', index=7,
+      number=8, type=5, cpp_type=1, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -87,7 +101,7 @@ _CTRLMSG = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=26,
-  serialized_end=110,
+  serialized_end=142,
 )
 
 DESCRIPTOR.message_types_by_name['CtrlMsg'] = _CTRLMSG

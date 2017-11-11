@@ -10,6 +10,6 @@ message CtrlMsg {
   required float roll = 4;
   required float pitch = 5;
   required float yaw = 6;
-  required int servoX = 7;
-  required int servoY = 8;
+  required int32 servoX = 7;
+  required int32 servoY = 8;
 }
