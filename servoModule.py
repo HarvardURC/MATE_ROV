@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-import maestro
+from maestro import Controller
 import time
-import wiringpi
 import os, random
 import robomodules as rm
 from messages import *
@@ -16,7 +15,7 @@ class ServoModule(rm.ProtoModule):
     def __init__(self, addr, port):
         self.subscriptions = []
 
-        self.servo = maestro.Controller()
+        self.servo = Controller()
 
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY)
 
