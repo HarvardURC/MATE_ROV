@@ -14,7 +14,6 @@ STEP = 5
 
 class ServoModule(rm.ProtoModule):
     def __init__(self, addr, port):
-        GPIO.cleanup()
         self.subscriptions = [MsgType.CTRL_MSG]
         GPIO.setmode(GPIO.BCM)
         self.servos = []
@@ -41,8 +40,8 @@ class ServoModule(rm.ProtoModule):
                 self.positions[0] += STEP
             elif self.msg.servoX == -1:
                 self.positions[0] -= STEP
-            if self.positions[0] > 180:
-                self.positions[0] = 180
+            if self.positions[0] > 6000:
+                self.positions[0] = 6000
             elif self.positions[0] < 0:
                 self.positions[0] = 0
 
@@ -50,8 +49,8 @@ class ServoModule(rm.ProtoModule):
                 self.positions[1] += STEP
             elif self.msg.servoY == -1:
                 self.positions[1] -= STEP
-            if self.positions[1] > 180:
-                self.positions[1] = 180
+            if self.positions[1] > 6000:
+                self.positions[1] = 6000
             elif self.positions[1] < 0:
                 self.positions[1] = 0
         self._set_servo_angle(0)
@@ -65,8 +64,11 @@ class ServoModule(rm.ProtoModule):
 
 
 def main():
-    module = ServoModule(ADDRESS, PORT)
-    module.run()
+    try:
+        module = ServoModule(ADDRESS, PORT)
+        module.run()
+    except KeyboardInterrupt:
+        GPIO.cleanup()
 
 if __name__ == "__main__":
     main()
