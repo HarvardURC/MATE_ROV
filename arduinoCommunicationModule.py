@@ -33,7 +33,7 @@ class ArduinoCommsModule(rm.ProtoModule):
         pass
         
     def messageToString(self, m):
-        ans = ""
+        ans = "$"
         # go through each of the properties in the message
         for prop in ["x", "y", "z", "roll", "pitch", "yaw"]:
             # convert the number into a string

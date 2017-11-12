@@ -1,0 +1,9 @@
+syntax = "proto2";
+
+package mateROV;
+
+message OrientationMsg {
+  required float roll = 1;
+  required float pitch = 2;
+  required float yaw = 3;
+}
