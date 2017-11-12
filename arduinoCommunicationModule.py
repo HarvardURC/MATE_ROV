@@ -3,7 +3,7 @@
 import os
 import robomodules as rm
 import serial
-from messages import message_buffers, MsgType, 
+from messages import *
 
 
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
