@@ -16,7 +16,7 @@ class ArduinoCommsModule(rm.ProtoModule):
         self.subscriptions = [MsgType.CTRL_MSG]
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY, self.subscriptions)
         try:
-            self.serialConnection = serial.Serial('/dev/ttyUSB0')
+            self.serialConnection = serial.Serial('/dev/ttyUSB0', 9600)
         except Exception:
             raise RuntimeError("serial connection to Arduino failed")
 
@@ -26,13 +26,13 @@ class ArduinoCommsModule(rm.ProtoModule):
             # turn it into a string
             # turn the string into binary
             # send the binary
-            self.serialConnection.write(self.stringToBinary(self.serializeControlMessageToString(msg)))
+            self.serialConnection.write(self.stringToBinary(self.messageToString(msg)))
 
     def tick(self):
         # this function will get called in a loop with FREQUENCY frequency
         pass
         
-    def serializeControlMessageToString(self, m):
+    def messageToString(self, m):
         ans = ""
         # go through each of the properties in the message
         for prop in ["x", "y", "z", "roll", "pitch", "yaw"]:
