@@ -14,10 +14,14 @@ STEP = 5
 
 class ServoModule(rm.ProtoModule):
     def __init__(self, addr, port):
+        GPIO.cleanup()
         self.subscriptions = [MsgType.CTRL_MSG]
         GPIO.setmode(GPIO.BCM)
+        self.servos = []
         GPIO.setup(18, GPIO.OUT)
-        self.servos = [GPIO.PWM(18, 100)]
+        self.servos.append(GPIO.PWM(18, 100))
+        GPIO.setup(12, GPIO.OUT)
+        self.servos.append(GPIO.PWM(12, 100))
         self.positions = [0 for _ in range(len(self.servos))]
         self.msg = None
 
@@ -54,7 +58,7 @@ class ServoModule(rm.ProtoModule):
         self._set_servo_angle(1)
 
 
-    def _set_servo_angle(servo):
+    def _set_servo_angle(self, servo):
         angle = self.positions[servo]
         duty = float(angle) / 10.0 + 2.5
         self.servos[servo].ChangeDutyCycle(duty)
