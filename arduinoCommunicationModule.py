@@ -31,7 +31,7 @@ class ArduinoCommsModule(rm.ProtoModule):
     def tick(self):
         # this function will get called in a loop with FREQUENCY frequency
         # from https://www.raspberrypi.org/forums/viewtopic.php?f=32&t=54182
-        msg = self.stringToMessage(self.binaryToString(serial.readline()))
+        msg = self.stringToMessage(self.binaryToString(self.serialConnection.readline()))
         if msg:
             self.write(msg, MsgType.ORIENTATION_MSG)
 
@@ -48,12 +48,12 @@ class ArduinoCommsModule(rm.ProtoModule):
         return bytes(s, "ascii")
         
     def binaryToString(self, b):
-        b.decode('ascii')
+        return b.decode('ascii')
         
     def stringToMessage(self, s):
         ans = OrientationMsg()
         # take off leading '$'
-        s = s[1:]
+        s = s[1:] if s[0] == "$"
         # get all of the values in the string
         # need to take off the last empty string that split will leave
         numbers = (s.split(";"))[0:-1]
