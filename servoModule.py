@@ -16,13 +16,13 @@ class ServoModule(rm.ProtoModule):
     def __init__(self, addr, port):
         self.subscriptions = [MsgType.CTRL_MSG]
         GPIO.setmode(GPIO.BCM)
-		GPIO.setup(18, GPIO.OUT)
-		self.servos = [GPIO.PWM(18, 100)]
-		self.positions = [0 for _ in range(len(self.servos))]
-		self.msg = None
+        GPIO.setup(18, GPIO.OUT)
+        self.servos = [GPIO.PWM(18, 100)]
+        self.positions = [0 for _ in range(len(self.servos))]
+        self.msg = None
 
-		for servo in self.servos:
-			servo.start(5)
+        for servo in self.servos:
+            servo.start(5)
 
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY)
 
@@ -33,30 +33,30 @@ class ServoModule(rm.ProtoModule):
 
     def tick(self):
         if self.msg:
-        	if self.msg.servoX == 1:
-        		self.positions[0] += STEP
-        	elif self.msg.servoX == -1:
-        		self.positions[0] -= STEP
-        	if self.positions[0] > 180:
-        		self.positions[0] = 180
-        	elif self.positions[0] < 0:
-        		self.positions[0] = 0
+            if self.msg.servoX == 1:
+                self.positions[0] += STEP
+            elif self.msg.servoX == -1:
+                self.positions[0] -= STEP
+            if self.positions[0] > 180:
+                self.positions[0] = 180
+            elif self.positions[0] < 0:
+                self.positions[0] = 0
 
-        	if self.msg.servoY == 1:
-        		self.positions[1] += STEP
-        	elif self.msg.servoY == -1:
-        		self.positions[1] -= STEP
-        	if self.positions[1] > 180:
-        		self.positions[1] = 180
-        	elif self.positions[1] < 0:
-        		self.positions[1] = 0
+            if self.msg.servoY == 1:
+                self.positions[1] += STEP
+            elif self.msg.servoY == -1:
+                self.positions[1] -= STEP
+            if self.positions[1] > 180:
+                self.positions[1] = 180
+            elif self.positions[1] < 0:
+                self.positions[1] = 0
         self._set_servo_angle(0)
         self._set_servo_angle(1)
 
 
     def _set_servo_angle(servo):
-    	angle = self.positions[servo]
-    	duty = float(angle) / 10.0 + 2.5
+        angle = self.positions[servo]
+        duty = float(angle) / 10.0 + 2.5
         self.servos[servo].ChangeDutyCycle(duty)
 
 
