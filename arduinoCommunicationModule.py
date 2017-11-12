@@ -3,7 +3,7 @@
 import os
 import robomodules as rm
 import serial
-from messages import message_buffers, MsgType
+from messages import message_buffers, MsgType, 
 
 
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
@@ -30,8 +30,11 @@ class ArduinoCommsModule(rm.ProtoModule):
 
     def tick(self):
         # this function will get called in a loop with FREQUENCY frequency
-        pass
-        
+        # from https://www.raspberrypi.org/forums/viewtopic.php?f=32&t=54182
+        msg = self.stringToMessage(self.binaryToString(serial.readline()))
+        if msg:
+            self.write(, MsgType.ORIENTATION_MSG)
+
     def messageToString(self, m):
         ans = "$"
         # go through each of the properties in the message
@@ -42,7 +45,29 @@ class ArduinoCommsModule(rm.ProtoModule):
         return ans
         
     def stringToBinary(self, s):
-        return bytes(s)
+        return bytes(s, "ascii")
+        
+    def binaryToString(self, b):
+        b.decode('ascii')
+        
+    def stringToMessage(self, s):
+        ans = OrientationMsg()
+        # take off leading '$'
+        s = s[1:]
+        # get all of the values in the string
+        # need to take off the last empty string that split will leave
+        numbers = (s.split(";"))[0:-1]
+        # didn't get a good input
+        if len(numbers) != 3:
+            return None
+        # assumes the values are coming in in that order
+        for (number, name) in zip(numbers, ["roll", "pitch", "yaw"]):
+            setattr(ans, name, number)
+        
+        return ans
+            
+        
+        
 
 
 def main():
