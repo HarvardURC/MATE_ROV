@@ -5,7 +5,6 @@ import robomodules as rm
 import serial
 from messages import *
 
-
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
 PORT = os.environ.get("BIND_PORT", 11297)
 
@@ -26,16 +25,16 @@ class ArduinoCommsModule(rm.ProtoModule):
             # turn it into a string
             # turn the string into binary
             # send the binary
-            self.serialConnection.write(self.stringToBinary(self.messageToString(msg)))
+            self.serialConnection.write(self._stringToBinary(self._messageToString(msg)))
 
     def tick(self):
         # this function will get called in a loop with FREQUENCY frequency
         # from https://www.raspberrypi.org/forums/viewtopic.php?f=32&t=54182
-        msg = self.stringToMessage(self.binaryToString(self.serialConnection.readline()))
+        msg = self._stringToMessage(self._binaryToString(self.serialConnection.readline()))
         if msg:
             self.write(msg, MsgType.ORIENTATION_MSG)
 
-    def messageToString(self, m):
+    def _messageToString(self, m):
         ans = "$"
         # go through each of the properties in the message
         for prop in ["x", "y", "z", "roll", "pitch", "yaw"]:
@@ -44,13 +43,13 @@ class ArduinoCommsModule(rm.ProtoModule):
             ans += (str(getattr(m, prop)) + ";")
         return ans
         
-    def stringToBinary(self, s):
+    def _stringToBinary(self, s):
         return bytes(s, "ascii")
         
-    def binaryToString(self, b):
+    def _binaryToString(self, b):
         return b.decode('ascii')
         
-    def stringToMessage(self, s):
+    def _stringToMessage(self, s):
         ans = OrientationMsg()
         # take off leading '$'
         s = s[1:] if s[0] == "$"
@@ -66,12 +65,10 @@ class ArduinoCommsModule(rm.ProtoModule):
         
         return ans
             
-        
-        
-
 
 def main():
-    print("No main written for ArduinoCommsModule yet!")
+    module = ArduinoCommsModule(ADDRESS, PORT)
+    module.run()
 
 if __name__ == "__main__":
     main()
