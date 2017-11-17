@@ -20,6 +20,8 @@ class JoystickModule(rm.ProtoModule):
         self.pitch = 0.
         self.yaw = 0.
         self.roll = 0.
+        self.camera_tilt = 0.
+        self.camera_pan = 0.
         self.logitech = None
         pygame.init()
         pygame.joystick.init()
@@ -57,6 +59,8 @@ class JoystickModule(rm.ProtoModule):
         msg.pitch = self.pitch
         msg.yaw = self.yaw
         msg.roll = self.roll
+        msg.cameraTilt = self.camera_tilt
+        msg.cameraPan = self.camera_pan
         msg = msg.SerializeToString()
         self.write(msg, MsgType.CTRL_MSG)
 
