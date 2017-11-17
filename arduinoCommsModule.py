@@ -15,7 +15,7 @@ class ArduinoCommsModule(rm.ProtoModule):
         self.subscriptions = [MsgType.CTRL_MSG]
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY, self.subscriptions)
         try:
-            self.serialConnection = serial.Serial('/dev/ttyUSB0', 9600)
+            self.serialConnection = serial.Serial('/dev/ttyACM0', 9600)
         except Exception:
             raise RuntimeError("serial connection to Arduino failed")
 
@@ -53,7 +53,7 @@ class ArduinoCommsModule(rm.ProtoModule):
     def _stringToMessage(self, s):
         ans = OrientationMsg()
         # take off leading '$'
-        s = s[1:] if s[0] == "$"
+        s = s[1:] if s[0] == "$" else s
         # get all of the values in the string
         # need to take off the last empty string that split will leave
         numbers = (s.split(";"))[0:-1]
