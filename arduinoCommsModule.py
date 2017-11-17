@@ -37,10 +37,11 @@ class ArduinoCommsModule(rm.ProtoModule):
     def _messageToString(self, m):
         ans = "$"
         # go through each of the properties in the message
-        for prop in ["x", "y", "z", "roll", "pitch", "yaw"]:
+        for prop in ["x", "y", "z", "roll", "pitch", "yaw", "cameraTilt", "cameraPan"]:
             # convert the number into a string
             # separate the properties with a semicolon
             ans += (str(getattr(m, prop)) + ";")
+        ans += "\0"
         return ans
         
     def _stringToBinary(self, s):

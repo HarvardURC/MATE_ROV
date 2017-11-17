@@ -10,4 +10,6 @@ message CtrlMsg {
   required float roll = 4;
   required float pitch = 5;
   required float yaw = 6;
+  optional float cameraTilt = 7;
+  optional float cameraPan = 8;
 }
