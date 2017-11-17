@@ -17,7 +17,7 @@ struct message {
     float cameraPan;
 };
 
-//Adafruit_BNO055 bno = Adafruit_BNO055(55);
+Adafruit_BNO055 bno = Adafruit_BNO055(55);
 int ticks = 0;
 
 Servo panServo;
@@ -53,6 +53,7 @@ void print_orientation(sensors_event_t event) {
     Serial.print(event.orientation.y);
     Serial.print(';');
     Serial.print(event.orientation.z);
+    Serial.print(';');
     Serial.print('\n');
 }
 
