@@ -9,7 +9,7 @@ from pygame.locals import *
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
 PORT = os.environ.get("BIND_PORT", 11297)
 
-FREQUENCY = 20
+FREQUENCY = 5
 
 class JoystickModule(rm.ProtoModule):
     def __init__(self, addr, port):
@@ -76,6 +76,10 @@ class JoystickModule(rm.ProtoModule):
         buttonRB = joy.get_button(5)
         buttonLT = joy.get_button(6)
         buttonRT = joy.get_button(7)
+        tpl = joy.get_hat(0)
+
+        self.camera_tilt = tpl[0]
+        self.camera_pan = tpl[1]
 
         # -1 <= up < 0 < down <= +1
         if buttonLB:
