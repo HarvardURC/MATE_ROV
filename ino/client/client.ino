@@ -6,6 +6,15 @@
 
 #define TICKS_PER_WRITE 200
 
+#define PANSERVO 2
+#define TILTSERVO 3
+#define T1 4
+#define T2 5
+#define T3 6
+#define T4 7
+#define T5 8
+#define T6 9
+
 struct message {
     float x;
     float y;
@@ -22,6 +31,9 @@ int ticks = 0;
 
 Servo panServo;
 Servo tiltServo;
+
+Servo thrusters[6];
+
 int panPos = 90;
 int tiltPos = 90;
 
@@ -38,8 +50,23 @@ void setup(void)
     }
   
     // initialize servos
-    panServo.attach(2, 800, 2200);
-    tiltServo.attach(10, 800, 2200);
+    panServo.attach(PANSERVO);
+    tiltServo.attach(TILTSERVO);
+
+    // initialize thrusters
+    thrusters[0].attach(T1);
+    thrusters[1].attach(T1);
+    thrusters[2].attach(T1);
+    thrusters[3].attach(T1);
+    thrusters[4].attach(T1);
+    thrusters[5].attach(T1);
+    
+    thrusters[0].writeMicroseconds(1500);
+    thrusters[1].writeMicroseconds(1500);
+    thrusters[2].writeMicroseconds(1500);
+    thrusters[3].writeMicroseconds(1500);
+    thrusters[4].writeMicroseconds(1500);
+    thrusters[5].writeMicroseconds(1500);
     
     delay(1000);
   
@@ -70,11 +97,16 @@ int read_message(struct message *msg) {
         if ((char)inChr == '$') {
             break;
         }
+        if(Serial.available() == 0) {
+            return 0;
+        }
     }
 
     while (field < 8) {
+        while(Serial.available() == 0);
         inChr = Serial.read();
         if ((char)inChr == ';') {
+            inString += '\0';
             switch(field) {
                 case 0:
                     msg->x = inString.toFloat();
@@ -104,7 +136,7 @@ int read_message(struct message *msg) {
             field++;
             inString = "";
         } else {
-            inString += char(inChr);
+            inString += (char) inChr;
         }
     }
     return 1;
@@ -117,38 +149,48 @@ void loop(void)
     bno.getEvent(&event);
   
     // TODO: run PID
-    
+
+    /* Sample: Turn all thrusters on. value has to be in between 1100 and 1900
+    thrusters[0].writeMicroseconds(1700);
+    thrusters[1].writeMicroseconds(1700);
+    thrusters[2].writeMicroseconds(1700);
+    thrusters[3].writeMicroseconds(1700);
+    thrusters[4].writeMicroseconds(1700);
+    thrusters[5].writeMicroseconds(1700); */
     
     if (ticks % TICKS_PER_WRITE == 0) {
-        print_orientation(event);
+        //print_orientation(event);
     }
-    
     // read from Serial
     if (read_message(&curMsg)) {
         if (curMsg.cameraTilt > 0) {
-            tiltPos++;
+            tiltPos+= 10;
         } else if (curMsg.cameraTilt < 0) {
-            tiltPos--;
+            tiltPos-= 10;
         }
-        if (tiltPos > 180) {
-            tiltPos = 180;
-        } else if (tiltPos < 0) {
-            tiltPos = 0;
+        if (tiltPos > 360) {
+            tiltPos = 360;
+        } else if (tiltPos < -180) {
+            tiltPos = -180;
         }
         
         if (curMsg.cameraPan > 0) {
-            panPos++;
+            panPos+= 10;
         } else if (curMsg.cameraPan < 0) {
-            panPos--;
+            panPos-= 10;
         }
-        if (panPos > 180) {
-            panPos = 180;
-        } else if (panPos < 0) {
-            panPos = 0;
+        if (panPos > 360) {
+            panPos = 360;
+        } else if (panPos < -180) {
+            panPos = -180;
         }
   
     }
-    panServo.write(panPos);
-    tiltServo.write(panPos);
+    Serial.print(panPos);
+    Serial.print(" ");
+    Serial.println(tiltPos);
+    panServo.writeMicroseconds(1100 + panPos*5);
+    //tiltServo.write(tiltPos);
+    delay(500);
     ticks++;
 }
