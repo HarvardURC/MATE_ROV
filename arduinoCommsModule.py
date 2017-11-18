@@ -47,12 +47,11 @@ class ArduinoCommsModule(rm.ProtoModule):
         
     def _stringToMessage(self, s):
         ans = OrientationMsg()
-        # take off leading '$'
-        s = s[1:] if s[0] == "$" else s
-        # get all of the values in the string
-        # need to take off the last empty string that split will leave
+        if s[0] == '$':
+            s = s[1:]
+        else:
+            return None
         numbers = (s.split(";"))[0:-1]
-        # didn't get a good input
         if len(numbers) != 3:
             return None
         # assumes the values are coming in in that order
