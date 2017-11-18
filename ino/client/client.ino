@@ -15,6 +15,16 @@
 #define T5 8
 #define T6 9
 
+#define FRONT_LEFT 0
+#define FRONT_RIGHT 1
+#define BACK_LEFT 2
+#define BACK_RIGHT 3
+#define SIDE_LEFT 4
+#define SIDE_RIGHT 5
+
+#define THRUSTER_BASE 1500
+#define THRUSTER_MAX 400
+
 struct message {
     float x;
     float y;
@@ -55,11 +65,11 @@ void setup(void)
 
     // initialize thrusters
     thrusters[0].attach(T1);
-    thrusters[1].attach(T1);
-    thrusters[2].attach(T1);
-    thrusters[3].attach(T1);
-    thrusters[4].attach(T1);
-    thrusters[5].attach(T1);
+    thrusters[1].attach(T2);
+    thrusters[2].attach(T3);
+    thrusters[3].attach(T4);
+    thrusters[4].attach(T5);
+    thrusters[5].attach(T6);
     
     thrusters[0].writeMicroseconds(1500);
     thrusters[1].writeMicroseconds(1500);
@@ -140,6 +150,10 @@ int read_message(struct message *msg) {
         }
     }
     return 1;
+}
+
+void simpleController(struct message *msg) {
+    // TODO: ADD controller    
 }
 
 void loop(void)
