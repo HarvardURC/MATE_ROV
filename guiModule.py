@@ -13,14 +13,14 @@ ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
 PORT = os.environ.get("BIND_PORT", 11297)
 
 FREQUENCY = 25
-NAVBALL_FREQ = 1
+NAVBALL_FREQ = 5
 FRAME_WIDTH = 640
 SCREEN_SIZE = (FRAME_WIDTH*3, 900)
 NAVBALL_SIZE = 300
 
 class GuiModule(rm.ProtoModule):
     def __init__(self, addr, port):
-        self.subscriptions = [MsgType.CAMERA_FRAME_MSG, MsgType.CTRL_MSG, MsgType.HUMIDITY_MSG]
+        self.subscriptions = [MsgType.CAMERA_FRAME_MSG, MsgType.CTRL_MSG, MsgType.HUMIDITY_MSG, MsgType.ORIENTATION_MSG]
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY, self.subscriptions)
         self.frames = {}
         pygame.init()
@@ -41,11 +41,13 @@ class GuiModule(rm.ProtoModule):
         if msg_type == MsgType.CAMERA_FRAME_MSG:
             self.frames[msg.id] = msg.cameraFrame
         elif msg_type == MsgType.CTRL_MSG:
-            self.roll = msg.roll * 90
-            self.pitch = msg.pitch * 90
-            self.yaw = msg.yaw * 90
+            return 
         elif msg_type == MsgType.HUMIDITY_MSG:
             self.humidity = msg.humidity
+        elif msg_type == MsgType.ORIENTATION_MSG:
+            self.roll = msg.roll
+            self.yaw = msg.yaw + 180
+            self.pitch = msg.pitch + 180
         
     def tick(self):
         for event in pygame.event.get():

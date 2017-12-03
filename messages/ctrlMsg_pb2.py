@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='ctrlMsg.proto',
   package='mateROV',
   syntax='proto2',
-  serialized_pb=_b('\n\rctrlMsg.proto\x12\x07mateROV\"T\n\x07\x43trlMsg\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\x0c\n\x04roll\x18\x04 \x02(\x02\x12\r\n\x05pitch\x18\x05 \x02(\x02\x12\x0b\n\x03yaw\x18\x06 \x02(\x02')
+  serialized_pb=_b('\n\rctrlMsg.proto\x12\x07mateROV\"{\n\x07\x43trlMsg\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\x0c\n\x04roll\x18\x04 \x02(\x02\x12\r\n\x05pitch\x18\x05 \x02(\x02\x12\x0b\n\x03yaw\x18\x06 \x02(\x02\x12\x12\n\ncameraTilt\x18\x07 \x01(\x02\x12\x11\n\tcameraPan\x18\x08 \x01(\x02')
 )
 
 
@@ -74,6 +74,20 @@ _CTRLMSG = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='cameraTilt', full_name='mateROV.CtrlMsg.cameraTilt', index=6,
+      number=7, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='cameraPan', full_name='mateROV.CtrlMsg.cameraPan', index=7,
+      number=8, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -87,7 +101,7 @@ _CTRLMSG = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=26,
-  serialized_end=110,
+  serialized_end=149,
 )
 
 DESCRIPTOR.message_types_by_name['CtrlMsg'] = _CTRLMSG
