@@ -19,7 +19,6 @@ void setup() {
 
 void loop() {
     recvWithEndMarker();
-    showNewData();
 }
 
 void recvWithEndMarker() {
@@ -52,6 +51,8 @@ void recvWithEndMarker() {
         }
     }
 
+    translate();
+
 }
 
 void translate() {
@@ -63,10 +64,4 @@ void translate() {
     yaw = vals[5];
     cameraTilt = vals[6];
     cameraPan = vals[7];
-}
-
-void showNewData() {
-    if (newData == true) {
-        newData = false;
-    }
 }
