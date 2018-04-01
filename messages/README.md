@@ -41,11 +41,15 @@ The `.proto` one describes to `protobuf` what to make. In `Makefile`, you'll see
 
 ## Adding a new message type
 
+Check the README.md at the root of the project.
+
+Otherwise, here's a different way to describe how to do it.
+
 1. You need to make a `.proto` file with the new message type
 2. Add a line to the `Makefile`
     - `protoc -I=./ --python_out=./ ./##yourTypeHere##.proto`
 3. Do `make`, which will generate a new `_pb2.py` file. You must have protocol buffers installed to do this. If you don't want to install it, ask someone to compile your `.proto` file for you.
-4. Add four lines to `__init__.py`
+4. Four lines to `__init__.py`:
     - import the message type up top
     - add to the `MsgType` Enum
     - add to the `message_buffers` dictionary
