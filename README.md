@@ -21,12 +21,12 @@ The code consist of separate modules that are run on either the ROV or on a grou
     - Create a new .proto file describing your buffer in the messages folder.
     - Add your new .proto file to the Makefile in the messages folder.
         - Before:
-        ```
+        ```make
         protobuf: first.proto
     	    protoc -I=./ --python_out=./ ./first.proto
         ```
         - After:
-        ```
+        ```make
         protobuf: first.proto second.proto
     	    protoc -I=./ --python_out=./ ./first.proto
     	    protoc -I=./ --python_out=./ ./second.proto
@@ -38,7 +38,7 @@ The code consist of separate modules that are run on either the ROV or on a grou
         - Add the new message type and the associated buffer to `message_buffers`.
         - Example:
             - Before:
-            ```
+            ```python
             import struct
             from .first_pb2 import FirstMsg
 
@@ -48,9 +48,11 @@ The code consist of separate modules that are run on either the ROV or on a grou
             message_buffers = {
                 MsgType.FIRST: FirstMsg
             }
+            
+            __all__ = ['MsgType', 'message_buffers', 'FirstMsg']
             ```
             - After:
-            ```
+            ```python
             import struct
             from .first_pb2 import FirstMsg
             from .second_pb2 import SecondMsg
@@ -63,5 +65,7 @@ The code consist of separate modules that are run on either the ROV or on a grou
                 MsgType.FIRST: FirstMsg,
                 MsgType.SECOND: SecondMsg
             }
+            
+            __all__ = ['MsgType', 'message_buffers', 'FirstMsg', 'SecondMsg']
             ```
 2. Make a new module class that inherits from `robomodules.ProtoModule`. Look at `MockGuiModule.py` and `MockSensorModule` for examples on modules.
