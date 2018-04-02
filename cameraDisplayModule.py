@@ -26,7 +26,6 @@ class CameraDisplayModule(rm.ProtoModule):
             self.frame = msg.cameraFrame
         self._display_serialized_image()
         
-
     def tick(self):
         # FREQUENCY is 0, so this will never be called.
         return
