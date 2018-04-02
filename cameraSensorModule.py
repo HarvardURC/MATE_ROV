@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 
-import os, sys
-import robomodules as rm
-from messages import *
-import cv2, pickle
+import os
+import sys
 
-ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
+import cv2
+import pickle
+
+from messages import *
+import robomodules as rm
+
+ADDRESS = os.environ.get("BIND_ADDRESS", "localhost")
 PORT = os.environ.get("BIND_PORT", 11297)
 
 FREQUENCY = 4
+
 
 class CameraSensorModule(rm.ProtoModule):
     def __init__(self, addr, port, camera_port):
@@ -32,6 +37,7 @@ class CameraSensorModule(rm.ProtoModule):
         msg.id = self.id
         msg = msg.SerializeToString()
         self.write(msg, MsgType.CAMERA_FRAME_MSG)
+
 
 def main():
     port = 0
