@@ -19,8 +19,8 @@
 #define FRONT_RIGHT 1
 #define BACK_LEFT 2
 #define BACK_RIGHT 3
-#define SIDE_LEFT 4
-#define SIDE_RIGHT 5
+#define LEFT_MIDDLE 4
+#define RIGHT_MIDDLE 5
 
 #define THRUSTER_BASE 1500
 #define THRUSTER_MAX 400
@@ -152,8 +152,45 @@ int read_message(struct message *msg) {
     return 1;
 }
 
+void thrust(Servo servo, float power)
+{
+  if(power >= 1100 && power <= 1900){
+    servo.writeMicroseconds(power);
+    Serial.println(power); //remove line after testing
+  }
+}
+void forward(float speed)
+{
+  thrust (thrusters[FRONT_LEFT], speed);
+  thrust (thrusters[BACK_LEFT], speed);
+  thrust (thrusters[FRONT_RIGHT], speed);
+  thrust (thrusters[BACK_RIGHT], speed);
+}
+void horizontal(float speed)
+{
+  thrust (thrusters[FRONT_LEFT], -1 *speed);
+  thrust (thrusters[BACK_LEFT], speed);
+  thrust (thrusters[FRONT_RIGHT], -1 *speed);
+  thrust (thrusters[BACK_RIGHT], speed);
+}
+void rotate(float speed)
+{
+  thrust (thrusters[FRONT_LEFT], -1 *speed);
+  thrust (thrusters[BACK_LEFT], -1 *speed);
+  thrust (thrusters[FRONT_RIGHT], speed);
+  thrust (thrusters[BACK_RIGHT], speed);
+}
+void vertical(float speed)
+{
+  thrust (thrusters[LEFT_MIDDLE], speed);
+  thrust (thrusters[RIGHT_MIDDLE], speed);
+}
+
 void simpleController(struct message *msg) {
-    // TODO: ADD controller    
+    forward(msg->x);
+    horizontal(msg->y);
+    vertical(msg->z); 
+    rotate(msg->yaw);
 }
 
 void loop(void)
