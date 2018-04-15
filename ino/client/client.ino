@@ -214,6 +214,7 @@ void loop(void)
     }
     // read from Serial
     if (read_message(&curMsg)) {
+        simpleController(&curMsg);
         if (curMsg.cameraTilt > 0) {
             tiltPos+= 10;
         } else if (curMsg.cameraTilt < 0) {
