@@ -78,26 +78,35 @@ class JoystickModule(rm.ProtoModule):
         buttonRT = joy.get_button(7)
         tpl = joy.get_hat(0)
 
+        # -1 = top, 1 = bottom
+        leftY = joy.get_axis(1)
+        rightY = joy.get_axis(3)
+
+        # -1 = left, 1 = right
+        leftX = joy.get_axis(0)
+        rightX = joy.get_axis(2)
+
         self.camera_tilt = tpl[0]
         self.camera_pan = tpl[1]
 
-        # -1 <= up < 0 < down <= +1
+        # the following is a temporary control scheme
+        # many buttons above are not currently in use,
+        # but can easily be used.
         if buttonLB:
             self.y = 0.
-            self.z = joy.get_axis(1)
+            self.z = leftY
         else:
-            self.y = joy.get_axis(1)
+            self.y = leftY
             self.z = 0.
-        self.pitch = joy.get_axis(3)
+        self.pitch = rightY
 
-        # -1 <= left < 0 < right <= +1
         if buttonRB:
             self.yaw = 0.
-            self.roll = joy.get_axis(2)
+            self.roll = rightX
         else:
-            self.yaw = joy.get_axis(2)
+            self.yaw = rightX
             self.roll = 0.
-        self.x = joy.get_axis(0)
+        self.x = leftX
 
 
 def main():
